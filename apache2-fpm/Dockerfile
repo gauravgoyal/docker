@@ -42,6 +42,10 @@ RUN sed -i 's/\;listen.mode/listen.mode/' /etc/php5/fpm/pool.d/www.conf
 # Expose port 80 for apache inside the container.
 EXPOSE 80
 
+ADD src/ /var/www/html/
+
 # start apache2
-RUN /etc/init.d/apache2 start
-RUN /etc/init.d/php5-fpm start
+ADD start.sh /start.sh
+RUN chmod 0755 /start.sh
+WORKDIR /var/www/html/
+CMD ["bash", "start.sh"]
