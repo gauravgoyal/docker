@@ -28,6 +28,9 @@ RUN a2enmod actions fastcgi rewrite alias
 ENV APACHE_RUN_USER  www-data
 ENV APACHE_RUN_GROUP www-data
 ENV APACHE_LOG_DIR   /var/log/apache2
+ENV APACHE_PID_FILE    /var/run/apache2.pid
+ENV APACHE_RUN_DIR     /var/run/apache2
+ENV APACHE_LOCK_DIR    /var/lock/apache2
 
 # Add php5-conf file
 ADD php5-fpm.conf /etc/apache2/conf-available/php5-fpm.conf
@@ -40,12 +43,8 @@ RUN sed -i 's/listen = \/var\/run\/php5-fpm.sock/listen = 127\.0\.0\.1\:9000/' /
 RUN sed -i 's/\;listen.mode/listen.mode/' /etc/php5/fpm/pool.d/www.conf
 
 # Expose port 80 for apache inside the container.
+
 EXPOSE 80
 
-ADD src/ /var/www/html/
-
-# start apache2
-ADD start.sh /start.sh
-RUN chmod 0755 /start.sh
-WORKDIR /var/www/html/
-CMD ["bash", "start.sh"]
+# By default, simply start apache.
+CMD /usr/sbin/apache2ctl -D FOREGROUND
