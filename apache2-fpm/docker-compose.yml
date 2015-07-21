@@ -1,0 +1,6 @@
+apache:
+  image: gauravgoyal/apache2-mpm-php5-fpm:v1
+  ports:
+    - "8080:80"
+  volumes:
+   - .:/var/www/html/ 
