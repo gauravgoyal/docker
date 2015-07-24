@@ -1,6 +1,15 @@
-apache:
-  image: gauravgoyal/apache2-mpm-php5-fpm:v1
+web:
+  image: gauravgoyal/apache2-mpm-php5-fpm:drupal
   ports:
     - "8080:80"
   volumes:
-   - .:/var/www/html/ 
+    - /home/virus/Drupal/code/drupal:/var/www/html/ 
+  links:
+    - db
+db:
+  image: tutum/mysql
+  volumes:
+    - /home/virus/Drupal/mysql:/var/lib/mysql
+  environment:
+    - MYSQL_PASS=test
+    - MYSQL_USER=admin
