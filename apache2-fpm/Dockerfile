@@ -15,7 +15,7 @@ RUN apt-get update --fix-missing
 
 # Install Apache mpm worker with php5-fpm
 
-RUN apt-get install -y apache2-mpm-worker libapache2-mod-fastcgi php5-fpm php5-mysql mysql-client
+RUN apt-get install -y apache2-mpm-worker libapache2-mod-fastcgi php5-fpm php5-mysql mysql-client php5-gd
 
 # Enable apache default server configuration
 RUN echo "ServerName localhost" | tee /etc/apache2/conf-available/servername.conf
