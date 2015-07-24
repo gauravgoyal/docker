@@ -16,6 +16,8 @@ RUN apt-get update
 # Install Apache mpm worker with php5-fpm
 
 RUN apt-get install -y apache2-mpm-worker libapache2-mod-fastcgi php5-fpm
+RUN apt-get update --fix-missing
+RUN apt-get install -y mysql-client php5-mysql
 
 # Enable apache default server configuration
 RUN echo "ServerName localhost" | tee /etc/apache2/conf-available/servername.conf
@@ -39,12 +41,11 @@ ADD php5-fpm.conf /etc/apache2/conf-available/php5-fpm.conf
 RUN a2enconf php5-fpm.conf
 
 # Some php5-fpm common changes
-RUN sed -i 's/listen = \/var\/run\/php5-fpm.sock/listen = 127\.0\.0\.1\:9000/' /etc/php5/fpm/pool.d/www.conf
+RUN sed -i 's/;listen = \/var\/run\/php5-fpm.sock/listen = \/var\/run\/php5-fpm.sock/' /etc/php5/fpm/pool.d/www.conf
 RUN sed -i 's/\;listen.mode/listen.mode/' /etc/php5/fpm/pool.d/www.conf
 
 # Expose port 80 for apache inside the container.
-
 EXPOSE 80
 
-# By default, simply start apache.
-CMD /usr/sbin/apache2ctl -D FOREGROUND
+# start apache2
+CMD service php5-fpm start && /usr/sbin/apache2ctl -D FOREGROUND
