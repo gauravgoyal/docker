@@ -11,13 +11,11 @@ ENV DEBIAN_FRONTEND noninteractive
 COPY sources.list /etc/apt/sources.list
 
 # Update the system.
-RUN apt-get update
+RUN apt-get update --fix-missing
 
 # Install Apache mpm worker with php5-fpm
 
-RUN apt-get install -y apache2-mpm-worker libapache2-mod-fastcgi php5-fpm
-RUN apt-get update --fix-missing
-RUN apt-get install -y mysql-client php5-mysql
+RUN apt-get install -y apache2-mpm-worker libapache2-mod-fastcgi php5-fpm php5-mysql mysql-client
 
 # Enable apache default server configuration
 RUN echo "ServerName localhost" | tee /etc/apache2/conf-available/servername.conf
