@@ -25,4 +25,14 @@ docker run -d -p 8080:80 -v $(pwd)/apache2-fpm:/var/www/html/ --name web --link 
 
 ---------------------------------------------
 
-## For creating a databse either use mysql container bash prompt, or create via php.
+- For creating a databse either use mysql container bash prompt, or create via php.
+
+---------------------------------------------
+
+## SSH Configuration:
+
+- SSH is currently enabled for Apache2 Image only.
+- docker logs {container-id} - this will give you the password for root user.
+
+- you can supply your own password using 'ROOT_PASS' variable.
+- you can also add your authenticated keys using 'AUTHORIZED_KEYS' variable.
