@@ -15,7 +15,7 @@ RUN apt-get update --fix-missing
 
 # Install Apache mpm worker with php5-fpm
 
-RUN apt-get install -y apache2-mpm-worker libapache2-mod-fastcgi php5-fpm php5-mysql mysql-client php5-gd
+RUN apt-get install -y apache2-mpm-worker libapache2-mod-fastcgi php5-fpm php5-mysql mysql-client php5-gd openssh-server
 
 # Enable apache default server configuration
 RUN echo "ServerName localhost" | tee /etc/apache2/conf-available/servername.conf
@@ -42,8 +42,18 @@ RUN a2enconf php5-fpm.conf
 RUN sed -i 's/;listen = \/var\/run\/php5-fpm.sock/listen = \/var\/run\/php5-fpm.sock/' /etc/php5/fpm/pool.d/www.conf
 RUN sed -i 's/\;listen.mode/listen.mode/' /etc/php5/fpm/pool.d/www.conf
 
+# Open SSH server configurations
+ENV AUTHORIZED_KEYS **None**
+ADD ssh/root_pw_set.sh /root_pw_set.sh
+ADD ssh/configure.sh /configure.sh
+RUN mkdir -p /var/run/sshd && sed -i "s/UsePrivilegeSeparation.*/UsePrivilegeSeparation no/g" /etc/ssh/sshd_config && sed -i "s/UsePAM.*/UsePAM no/g" /etc/ssh/sshd_config && sed -i "s/PermitRootLogin.*/PermitRootLogin yes/g" /etc/ssh/sshd_config
+RUN bin/bash /configure.sh && rm /configure.sh
+
 # Expose port 80 for apache inside the container.
 EXPOSE 80
 
+# EXPOSE port 22 for SSH server
+EXPOSE 22
+
 # start apache2
-CMD service php5-fpm start && /usr/sbin/apache2ctl -D FOREGROUND
+CMD service php5-fpm start && service ssh start && /usr/sbin/apache2ctl -D FOREGROUND

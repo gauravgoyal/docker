@@ -1,5 +1,5 @@
 web:
-  image: gauravgoyal/apache2-mpm-php5-fpm:drupal
+  image: gauravgoyal/apache2-mpm-php5-fpm:latest
   ports:
     - "8080:80"
   volumes:
