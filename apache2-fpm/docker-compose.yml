@@ -6,6 +6,9 @@ web:
     - /home/virus/Drupal/code/drupal:/var/www/html/ 
   links:
     - db
+  environment:
+    - ROOT_PASS="testing"
+    - AUTHORIZED_KEYS="`cat ~/.ssh/id_rsa.pub`"
 db:
   image: tutum/mysql
   volumes:
