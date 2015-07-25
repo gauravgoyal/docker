@@ -22,3 +22,7 @@ fi
 if [ ! -f /.root_pw_set ]; then
 	bin/bash /root_pw_set.sh
 fi
+
+service php5-fpm start
+service ssh start
+/usr/sbin/apache2ctl -D FOREGROUND
