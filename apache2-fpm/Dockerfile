@@ -39,8 +39,8 @@ ADD php5-fpm.conf /etc/apache2/conf-available/php5-fpm.conf
 RUN a2enconf php5-fpm.conf
 
 # Some php5-fpm common changes
-RUN sed -i 's/;listen = \/var\/run\/php5-fpm.sock/listen = \/var\/run\/php5-fpm.sock/' /etc/php5/fpm/pool.d/www.conf
-RUN sed -i 's/\;listen.mode/listen.mode/' /etc/php5/fpm/pool.d/www.conf
+RUN sed -i 's/;listen = \/var\/run\/php5-fpm.sock/listen = \/var\/run\/php5-fpm.sock/' /etc/php5/fpm/pool.d/www.conf && sed -i 's/\;listen.mode/listen.mode/' /etc/php5/fpm/pool.d/www.conf && sed -i 's/expose_php.*/expose_php = off/g' /etc/php5/fpm/php.ini && sed -i 's/allow_url_fopen.*/allow_url_fopen = off/g' /etc/php5/fpm/php.ini
+
 
 # Open SSH server configurations
 ENV AUTHORIZED_KEYS **None**
