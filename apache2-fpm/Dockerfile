@@ -47,7 +47,7 @@ ENV AUTHORIZED_KEYS **None**
 ADD ssh/root_pw_set.sh /root_pw_set.sh
 ADD ssh/configure.sh /configure.sh
 RUN mkdir -p /var/run/sshd && sed -i "s/UsePrivilegeSeparation.*/UsePrivilegeSeparation no/g" /etc/ssh/sshd_config && sed -i "s/UsePAM.*/UsePAM no/g" /etc/ssh/sshd_config && sed -i "s/PermitRootLogin.*/PermitRootLogin yes/g" /etc/ssh/sshd_config
-RUN bin/bash /configure.sh && rm /configure.sh
+RUN chmod +x /*.sh
 
 # Expose port 80 for apache inside the container.
 EXPOSE 80
@@ -56,4 +56,4 @@ EXPOSE 80
 EXPOSE 22
 
 # start apache2
-CMD service php5-fpm start && service ssh start && /usr/sbin/apache2ctl -D FOREGROUND
+CMD ["/configure.sh"]
