@@ -15,7 +15,19 @@ RUN apt-get update --fix-missing
 
 # Install Apache mpm worker with php5-fpm
 
-RUN apt-get install -y apache2-mpm-worker libapache2-mod-fastcgi php5-fpm php5-mysql mysql-client php5-gd openssh-server
+RUN apt-get install -y apache2-mpm-worker libapache2-mod-fastcgi php5-fpm php5-mysql mysql-client php5-gd openssh-server php5-curl curl php5-cli
+
+# Install Composer.
+RUN curl -sS https://getcomposer.org/installer | php
+RUN mv composer.phar /usr/local/bin/composer
+
+# Install Drush 7.
+RUN composer global require drush/drush:7.*
+RUN composer global update
+# Unfortunately, adding the composer vendor dir to the PATH doesn't seem to work. So:
+RUN ln -s /root/.composer/vendor/bin/drush /usr/local/bin/drush
+
+
 
 # Enable apache default server configuration
 RUN echo "ServerName localhost" | tee /etc/apache2/conf-available/servername.conf
@@ -49,11 +61,8 @@ ADD ssh/configure.sh /configure.sh
 RUN mkdir -p /var/run/sshd && sed -i "s/UsePrivilegeSeparation.*/UsePrivilegeSeparation no/g" /etc/ssh/sshd_config && sed -i "s/UsePAM.*/UsePAM no/g" /etc/ssh/sshd_config && sed -i "s/PermitRootLogin.*/PermitRootLogin yes/g" /etc/ssh/sshd_config
 RUN chmod +x /*.sh
 
-# Expose port 80 for apache inside the container.
-EXPOSE 80
-
-# EXPOSE port 22 for SSH server
-EXPOSE 22
+# Expose port 80 for apache && 22 for ssh inside the container.
+EXPOSE 80 22
 
 # start apache2
 CMD ["/configure.sh"]
