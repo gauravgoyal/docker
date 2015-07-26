@@ -1,13 +1,14 @@
 web:
-  image: gauravgoyal/apache2-mpm-php5-fpm
+  image: gauravgoyal/apache2-mpm-php5-fpm:drush
   ports:
     - "8080:80"
+    - "8022:22"
   volumes:
     - /home/virus/Drupal/code/:/var/www/html/
     - /home/virus/Drupal/sites-available/:/etc/apache2/sites-available/
     - /home/virus/Drupal/sites-enabled/:/etc/apache2/sites-enabled/
   environment:
-    - AUTHORIZED_KEYS="Your key"
+   - AUTHORIZED_KEYS={your key}
   links:
     - db
 db:
@@ -17,4 +18,3 @@ db:
   environment:
     - MYSQL_PASS=test
     - MYSQL_USER=admin
-
