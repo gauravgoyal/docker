@@ -10,10 +10,6 @@ ENV ALLOWED_SERVERS 0.0.0.0
 
 Run apt-get install -y memcached
 
-USER memcache
-
 EXPOSE 11211
 
-ADD run.sh /run.sh
-
-CMD ["/run.sh"]
+CMD ["/usr/bin/memcached", "-u", "memcache", "-v"]
