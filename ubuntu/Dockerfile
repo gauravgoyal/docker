@@ -11,4 +11,10 @@ ENV DEBIAN_FRONTEND noninteractive
 COPY sources.list /etc/apt/sources.list
 
 # Update the system.
-RUN apt-get update --fix-missing
+RUN apt-get update --fix-missing && apt-get install -y openssh-server
+
+# SSH Settings
+RUN mkdir -p /var/run/sshd && sed -i "s/UsePrivilegeSeparation.*/UsePrivilegeSeparation no/g" /etc/ssh/sshd_config && sed -i "s/UsePAM.*/UsePAM no/g" /etc/ssh/sshd_config && sed -i "s/PermitRootLogin.*/PermitRootLogin yes/g" /etc/ssh/sshd_config
+
+# Expose port 22 for ssh inside the container.
+EXPOSE 22
