@@ -1,4 +1,4 @@
-FROM gauravgoyal/ubuntu:14.04
+FROM gauravgoyal/ubuntu
 
 # Specifying the maintainer for this image.
 MAINTAINER Gaurav Goyal "gkg.ras@gmail.com"

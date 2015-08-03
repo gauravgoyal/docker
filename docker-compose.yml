@@ -1,5 +1,5 @@
 web:
-  image: gauravgoyal/apache2-mpm-php5-fpm:drush
+  image: gauravgoyal/apache2-mpm-php5-fpm
   ports:
     - "8080:80"
     - "8022:22"
