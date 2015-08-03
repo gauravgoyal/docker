@@ -1,4 +1,4 @@
-FROM gauravgoyal/ubuntu:latest
+FROM gauravgoyal/ubuntu:sources
 
 # Specifying the maintainer for this image.
 MAINTAINER Gaurav Goyal "gkg.ras@gmail.com"
@@ -14,7 +14,7 @@ RUN curl -sS https://getcomposer.org/installer | php
 RUN mv composer.phar /usr/local/bin/composer
 
 # Install Drush 7.
-RUN composer global require drush/drush:7.*
+RUN composer global require drush/drush
 RUN composer global update
 
 # Unfortunately, adding the composer vendor dir to the PATH doesn't seem to work. So:
