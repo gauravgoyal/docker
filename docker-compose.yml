@@ -1,20 +1,26 @@
 web:
-  image: gauravgoyal/apache2-mpm-php5-fpm
+  image: gauravgoyal/apache2-mpm-php5-fpm:mac
   ports:
     - "8080:80"
     - "8022:22"
   volumes:
-    - /home/virus/Drupal/code/:/var/www/html/
-    - /home/virus/Drupal/sites-available/:/etc/apache2/sites-available/
-    - /home/virus/Drupal/sites-enabled/:/etc/apache2/sites-enabled/
+    - ~/public_html/code:/var/www/html/
+    - ~/public_html/sites-available:/etc/apache2/sites-available/
+    - ~/public_html/sites-enabled:/etc/apache2/sites-enabled/
+    - ~/public_html/logs:/var/log/apache2/
   environment:
-   - AUTHORIZED_KEYS={your key}
+    - AUTHORIZATION_KEYS=your key
   links:
     - db
+    - memcached
 db:
-  image: tutum/mysql
+  image: gauravgoyal/mysql:mac
   volumes:
-    - /home/virus/Drupal/mysql:/var/lib/mysql
+    - ~/public_html/mysql:/var/lib/mysql/
   environment:
-    - MYSQL_PASS=test
-    - MYSQL_USER=admin
+    - MYSQL_ADMIN_PASS=admin
+    - MYSQL_USER_NAME=drupal
+    - MYSQL_USER_DB=drupal
+    - MYSQL_USER_PASS=drupal 
+memcached:
+  image: gauravgoyal/memcached:latest
